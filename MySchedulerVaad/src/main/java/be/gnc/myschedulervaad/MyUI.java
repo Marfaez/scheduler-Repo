@@ -32,13 +32,19 @@ public class MyUI extends UI {
     private TextField filterText = new TextField();
 
     private Grid customerGrid = new Grid();
-    
+
     private CustomerForm form = new CustomerForm(this);
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         final VerticalLayout layout = new VerticalLayout();
 
+        Button addCustomerBtn = new Button("Add new customer");
+        addCustomerBtn.addClickListener(e -> {
+            customerGrid.select(null);
+            form.setCustomer(new Customer());
+        });
+        
         Button clearFilterTextBtn = new Button(FontAwesome.TIMES);
         clearFilterTextBtn.setDescription("Clear the current filter");
         clearFilterTextBtn.addClickListener(e -> {
@@ -47,7 +53,7 @@ public class MyUI extends UI {
         });
 
         CssLayout filtering = new CssLayout();
-        filtering.addComponents(filterText, clearFilterTextBtn);
+        filtering.addComponents(filterText, clearFilterTextBtn, addCustomerBtn);
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
         //layout.addComponent(filtering);
@@ -59,6 +65,7 @@ public class MyUI extends UI {
         setContent(layout);
 
         HorizontalLayout main = new HorizontalLayout(customerGrid, form);
+        form.setVisible(false);
         main.setSpacing(true);
         main.setSizeFull();
         customerGrid.setSizeFull();
@@ -66,13 +73,22 @@ public class MyUI extends UI {
 
         layout.setMargin(true);
         setContent(layout);
-        
-       layout.addComponents(filtering, main);
+
+        layout.addComponents(filtering, main);
 
         filterText.setInputPrompt("filter by name...");
         filterText.addTextChangeListener(e -> {
             customerGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class,
                     customerService.findAll(e.getText())));
+        });
+
+        customerGrid.addSelectionListener(event -> {
+            if (event.getSelected().isEmpty()) {
+                form.setVisible(false);
+            } else {
+                Customer customer = (Customer) event.getSelected().iterator().next();
+                form.setCustomer(customer);
+            }
         });
 
         Button button = new Button("Click Me");
