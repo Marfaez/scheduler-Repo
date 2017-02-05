@@ -102,11 +102,12 @@ public class MyUI extends UI {
 
     }
 
-    private void updateList() {
+    public void updateList() {
         List<Customer> customers = customerService.findAll();
         customerGrid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customers));
     }
 
+    
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
     public static class MyUIServlet extends VaadinServlet {
