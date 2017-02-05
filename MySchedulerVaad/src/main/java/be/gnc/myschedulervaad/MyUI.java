@@ -21,7 +21,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import java.util.List;
 
 /**
- *gnc class git test 2
+ *gnc class git test 3
  */
 @Theme("mytheme")
 @Widgetset("be.gnc.myschedulervaad.MyAppWidgetset")
