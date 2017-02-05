@@ -13,6 +13,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
@@ -21,7 +22,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import java.util.List;
 
 /**
- *gnc class git test 3
+ * gnc class git test 3
  */
 @Theme("mytheme")
 @Widgetset("be.gnc.myschedulervaad.MyAppWidgetset")
@@ -31,6 +32,8 @@ public class MyUI extends UI {
     private TextField filterText = new TextField();
 
     private Grid customerGrid = new Grid();
+    
+    private CustomerForm form = new CustomerForm(this);
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
@@ -47,14 +50,24 @@ public class MyUI extends UI {
         filtering.addComponents(filterText, clearFilterTextBtn);
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-        layout.addComponent(filtering);
-
+        //layout.addComponent(filtering);
         customerGrid.setColumns("firstName", "lastName", "email");
-        layout.addComponent(customerGrid);
+        //layout.addComponent(customerGrid);
         updateList();
 
         layout.setMargin(true);
         setContent(layout);
+
+        HorizontalLayout main = new HorizontalLayout(customerGrid, form);
+        main.setSpacing(true);
+        main.setSizeFull();
+        customerGrid.setSizeFull();
+        main.setExpandRatio(customerGrid, 1);
+
+        layout.setMargin(true);
+        setContent(layout);
+        
+       layout.addComponents(filtering, main);
 
         filterText.setInputPrompt("filter by name...");
         filterText.addTextChangeListener(e -> {
