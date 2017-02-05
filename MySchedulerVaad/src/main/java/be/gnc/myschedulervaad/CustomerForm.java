@@ -5,11 +5,13 @@
  */
 package be.gnc.myschedulervaad;
 
+import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.themes.ValoTheme;
 
 /**
  *
@@ -38,6 +40,9 @@ public class CustomerForm extends com.vaadin.ui.FormLayout{
         addComponents(firstName, lastName, email, status, birthdate, buttons);
         
         status.addItems(CustomerStatus.values());
+        
+        save.setStyleName(ValoTheme.BUTTON_PRIMARY);
+        save.setClickShortcut(KeyCode.ENTER);
     }
 
 }
